@@ -102,10 +102,10 @@ exports.restrictTo = (...roles) => {
   };
 };
 
-exports.checkInputedOwner = async (req, res, next) => {
+exports.checkInputedOwner = async (req, _, next) => {
   const checkOwner = await User.findById(req.body.owner);
 
-  if (checkOwner.role != "owner") {
+  if (!checkOwner || checkOwner.role != "owner") {
     return next(
       new AppError("Owner must be a user with a role of owner!", 404)
     );

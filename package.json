@@ -7,6 +7,8 @@
     "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
+    "test-user": "cross-env NODE_ENV=test jest --testTimeout=5000 test/user.test.js",
+    "test-lists": "cross-env NODE_ENV=test jest --testTimeout=5000 test/list.test.js",
     "debug": "ndb server.js"
   },
   "jest": {

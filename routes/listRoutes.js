@@ -16,6 +16,8 @@ router
     listController.createList
   );
 
+router.route("/delete").delete(listController.deleteAllLists);
+
 router
   .route("/:id")
   .get(authController.protect, listController.getList)

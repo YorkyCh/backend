@@ -7,6 +7,9 @@ let ownerId;
 beforeAll(async function () {
   await axios.delete("http://localhost:4000/api/users/delete");
 });
+afterAll(async function () {
+  await axios.delete("http://localhost:4000/api/users/delete");
+});
 
 // REGISTER
 
@@ -408,3 +411,82 @@ describe("Update user", () => {
 });
 
 // Delete User
+
+describe("Delete user", () => {
+  // test for invalid token
+
+  it("should throw an 401 error", async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4000/api/users/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGI1MDM5ODZhMzlkZDQzZWY0NzMzYiIsImlhdCI6MTcwMzYyODkxMiwiZXhwIjoxNzA2MjIwOTEyfQ.Qf0CmwBPPgzzJWbWsEnOTNmz-FJtpCrUDGUceF9_p6M`,
+          },
+        }
+      );
+
+      expect(true).toBe(false);
+    } catch (err) {
+      expect(err.response.data.error.statusCode).toBe(401);
+      expect(err.response.data.message).toBe(
+        "The user belonging to this token does no longer exist."
+      );
+    }
+  });
+
+  // for not logged in user
+
+  it("should throw an 401 error", async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4000/api/users/${userId}`
+      );
+
+      expect(true).toBe(false);
+    } catch (err) {
+      expect(err.response.data.message).toBe("You need to be logged in!");
+    }
+  });
+
+  // delete member
+  it("should delete user by id", async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4000/api/users/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      expect(response.status).toBe(204);
+    } catch (err) {
+      throw err;
+    }
+  });
+});
+
+// test forgot password
+
+describe("Forgot password", () => {
+  // test for invalid email
+
+  it("should throw an error", async () => {
+    try {
+      const userData = {
+        email: "error@example.com",
+      };
+      const response = await axios.post(
+        "http://localhost:4000/api/users/forgotPassword",
+        userData
+      );
+
+      expect(true).toBe(false);
+    } catch (err) {
+      expect(err.response.data.message).toBe(
+        "There is no user with email address."
+      );
+    }
+  });
+});

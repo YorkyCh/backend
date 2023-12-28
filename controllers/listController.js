@@ -11,6 +11,13 @@ exports.createList = catchAsync(async (req, res, next) => {
     data: { data: newDocument },
   });
 });
+exports.deleteAllLists = async (req, res, next) => {
+  await List.deleteMany();
+
+  res.status(204).json({
+    status: "success",
+  });
+};
 
 exports.getAllLists = factory.getAll(List);
 exports.getList = factory.getOne(List, "items");
