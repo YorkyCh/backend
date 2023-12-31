@@ -15,6 +15,14 @@ exports.getAllItems = catchAsync(async function (req, res, next) {
   });
 });
 
+exports.deleteAllItems = async (req, res, next) => {
+  await Item.deleteMany();
+
+  res.status(204).json({
+    status: "success",
+  });
+};
+
 exports.setItemUserIds = (req, res, next) => {
   // nested routes
   if (!req.body.list) req.body.list = req.params.id;

@@ -14,6 +14,8 @@ router
     itemController.createItem
   );
 
+router.route("/delete").delete(itemController.deleteAllItems);
+
 router
   .route("/:id")
   .delete(authController.protect, itemController.deleteItem)
